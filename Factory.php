@@ -6,19 +6,19 @@ require_once "TableStore.class.php";
 require_once "SolrInteraction.php";
 
 class Factory {
-	function getManagerObj() {
+	public function getManagerObj() {
 		return (new Manager($this->getDBObj(), $this->getAPIObj(),$this->getSolrObj()));
 	}
 
-	function getAPIObj() {
+	private function getAPIObj() {
 		return (new APIRequest());
 	}
 
-	function getDBObj() {
+	private function getDBObj() {
 		return (new TableStore());
 	}
     
-    function getSolrObj() {
+    private function getSolrObj() {
         return (new SolrInteraction());
     }
 }

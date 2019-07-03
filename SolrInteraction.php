@@ -1,39 +1,35 @@
 <?php
 
-require_once "SolrConfig.php";
+require_once "config.php";
 
 class SolrInteraction
 {
     
     
-    public function search($query)
+    public function getSOLR_search_URL($query, $search_field)
     {
-        global $url, $escapeCharacters, $replacedCharacters, $additionalParams;
+        global $search_url, $escapeCharacters, $replacedCharacters, $additionalParams;
         $query = str_replace('\\','',$query);       //Necessary for json_decode() to work properly
         $query = json_decode($query);               //json_decode() returns the object out of the string.
         
         $searchString = $query->{"latex"};          //"latex" extracted 
         
-        
-        
-        
-        
-        
         $searchString = str_replace($escapeCharacters,$replacedCharacters,$searchString);
     
         $searchString = str_replace(' ', '+',$searchString);    //In curl, space is represented by '+'
     
-        $url = $url . $searchString . $additionalParams;
-        //Making curl request now
+        $search_url = $search_url . $searchString . $additionalParams . "&df=" . $search_field;
+            
         
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-
+        return $search_url;
         
-        print_r($result);
         
+    }
+    
+    public function getSOLR_index_URL($import_type)
+    {
+        global $index_url;
+        return ($index_url . $import_type);
     }
 }
 
