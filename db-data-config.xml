@@ -1,0 +1,20 @@
+
+
+<dataConfig>
+    <dataSource type = "JdbcDataSource" driver="org.mariadb.jdbc.Driver" url="jdbc:mariadb://localhost:3306/school_api?user=root"/>
+    <document>
+        <entity name="fliplearn_doubts_response" query="SELECT Image_Id as id, SUBSTRING(Mathpix_API_Response, 10, INSTR(Mathpix_API_Response,&quot;,\&quot;latex_confidence_rate\&quot;:&quot;)-10) as Mathpix_API_Latex,Mathpix_API_Response,Vision_API_Response from fliplearn_doubts_response where fliplearn_doubts_response.Image_Id = fliplearn_doubts_response.Image_Id;"
+                
+                deltaImportQuery= "SELECT Image_Id as id, SUBSTRING(Mathpix_API_Response, 10, INSTR(Mathpix_API_Response, &quot;,\&quot;latex_confidence_rate\&quot;:&quot;)-10) as Mathpix_API_Latex, Mathpix_API_Response, Vision_API_Response from fliplearn_doubts_response where fliplearn_doubts_response.Image_Id = fliplearn_doubts_response.Image_Id AND Image_Id = '${dataimporter.delta.id}'"
+                deltaQuery="select Image_Id as id from fliplearn_doubts_response where updated_at >= '${dataimporter.last_index_time}'">
+            <field column="Image_Id" name="Image_Id" />
+            <field column="Mathpix_API_Latex" name="Mathpix_API_Latex" />
+            <field column="Vision_API_Response" name="Vision_API_Response" />
+            <!--<field column="Mathpix_API_Response" name="Mathpix_API_Response" />-->
+
+            
+            
+            
+        </entity>
+    </document>
+</dataConfig>    
