@@ -45,6 +45,7 @@
     that avoids logging every request
 -->
 
+
 <schema name="example-DIH-db" version="1.6">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        version="x.y" is Solr's version number for the schema syntax and 
