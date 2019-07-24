@@ -15,9 +15,20 @@ $mathpix_header_array = array("Content-Type: $mathpix_content_type", "app_id: $m
 $escapeCharacters = array('/','\\','+','-','&&','||','!','(',')','{','}','[',']','^','~','*','?',':');
 $replacedCharacters = array('\/','\\\\','\+','\-','\&&','\||','\!','\(','\)','\{','\}','\[','\]','\^','\~','\*','\?','\:');
 
-$search_field = "Mathpix_API_Response";
+$search_field = "Mathpix_API_Latex";
 $import_type = "delta-import";
 $base_url = "http://localhost:8983/solr/FliplearnDoubtsDb/";
 $search_url = $base_url . "select?q=";
-$additionalParams = "&rows=2&sort=score+desc&fl=id+Mathpix_API_Response+score";
+$additionalParams = "&rows=20&sort=score+desc&fl=id+Mathpix_API_Response+score";
 $index_url = $base_url . "dataimport?command=";
+
+
+/*The fields of the table*/
+$fields = array("Image_Id","Mathpix_API_Response","Vision_API_Response","created_at","updated_at");
+
+
+//Format of the 'updates' array, for updating the response in DB.
+$updates = array(
+        "Mathpix_API_Response"=>"\"updated response\"",
+        "Vision_API_Response"=>"\"no vision yet\"",
+        "updated_at"=>"CURRENT_TIMESTAMP");

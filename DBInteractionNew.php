@@ -4,7 +4,7 @@ require_once "dbConn.php";
 
 class DBInteractionNew
 {
-	public function getDBConnection($database = 'fliplearn') {
+	public function getDBConnection($database = 'school_api') {
 		global $serverArr;
 		$servername = $serverArr[$database]['hostname'];
 		$username = $serverArr[$database]['username'];

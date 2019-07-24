@@ -1,7 +1,5 @@
 <?php
 
-require_once "config.php";
-
 
 class APIRequest {
 
@@ -12,7 +10,6 @@ class APIRequest {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
         
-            
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             
         

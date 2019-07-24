@@ -1,43 +1,60 @@
 <?php
 
-require_once "DBInteractionNew.php";
 
 class TableStore {
     public $objDBConnection;
-	public function __construct() {
-		$this->objDBConnection = new DBInteractionNew();
+	public function __construct($objDBConnection) {
+		$this->objDBConnection = $objDBConnection;
 	}
 
 	//Function for the 'INSERT' query.
-	public function insertResponse($image_Id, $response, $table_name) {
+	public function insertResponse($insertArray, $table_name,$fields) {
 		$conn = $this->objDBConnection->getDBConnection();
 		if($conn != NULL) {
-			$insertQuery = "INSERT INTO $table_name(Image_Id,Mathpix_API_Response) 
-				VALUES(\"$image_Id\",\"$response\")";
-			$conn->exec($insertQuery); 
+            
+            $sql = "SELECT count(*) FROM $table_name WHERE Image_Id =";
+            $sql.=$insertArray['Image_Id'];
+            $result = $conn->prepare($sql);
+            $result->execute();
+            $number_of_rows = $result->fetchColumn();
+			print_r($number_of_rows);
+            if($number_of_rows==0){
+                $field_string = implode(",", $fields);
+            
+                $valueStr="";
+            
+                foreach($insertArray as $field=>$response)
+                {
+            
+                    $valueStr .= $response;
+                    $valueStr.=",";
+                }
+                $valueStr = rtrim($valueStr,",");
+            
+                $insertQuery = "INSERT INTO $table_name($field_string) 
+				VALUES($valueStr)";
+            
+            
+			    $conn->exec($insertQuery);
+            }
 			
 			$conn = null;
 		}
 	}
 
-	public function updateResponse($updates = array(), $table_name) {
+	public function updateResponse($image_Id,$updates = array(), $table_name) {
 		$conn = $this->objDBConnection->getDBConnection();
 		if($conn != NULL) {
-			$image_Id = $updates["Image_Id"];
-			//collecting row
-			$record = $conn->prepare("SELECT * FROM $table_name where id= $image_Id");
-			if($record->execute()) {
-				$row = $record->fetch(PDO::FETCH_OBJ);
-			}
+			
 
-			//mathpix_response update
-			if($updates["Mathpix_API_Response"]!= null)
-				$response1= $updates["Mathpix_API_Response"];
-			else
-				$response1= $row["Mathpix_API_Response"];
+			foreach($updates as $field=>$new_response)
+            {
+               $updateQuery = "UPDATE $table_name SET $field = $new_response where Image_Id = \"$image_Id\"";
+			   $conn->exec($updateQuery); 
+            }
+			
 
-			$updateQuery = "UPDATE $table_name SET Mathpix_API_Response= \"$response1\" where Image_Id = \"$image_Id\"; ";
-			$conn->exec($updateQuery);
+			
 			$conn = null;
 		}
 	}

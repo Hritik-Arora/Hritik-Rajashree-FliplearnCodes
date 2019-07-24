@@ -142,7 +142,7 @@
    <field name="Image_Id" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="Mathpix_API_Latex" type="text_general" indexed="true" stored="false" />
    <field  name="Vision_API_Response" type="text_general" indexed="true" stored="true" />
-   <field name="Mathpix_API_Response" type="text_general" indexed="false" stored="true" />
+   <field name="Mathpix_API_Response" type="text_general" indexed="false" stored="true"  />
 
 
 

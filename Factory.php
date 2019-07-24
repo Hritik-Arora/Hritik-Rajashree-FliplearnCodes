@@ -4,6 +4,7 @@ require_once "Manager.php";
 require_once "APIRequest.php";
 require_once "TableStore.class.php";
 require_once "SolrInteraction.php";
+require_once "DBInteractionNew.php";
 
 class Factory {
 	public function getManagerObj() {
@@ -15,10 +16,14 @@ class Factory {
 	}
 
 	private function getDBObj() {
-		return (new TableStore());
+		return (new TableStore($this->getDBConn()));
 	}
     
     private function getSolrObj() {
         return (new SolrInteraction());
+    }
+    
+    private function getDBConn(){
+        return (new DBInteractionNew());
     }
 }

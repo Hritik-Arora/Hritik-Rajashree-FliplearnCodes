@@ -1,20 +1,53 @@
+ <!--<dataConfig>
+    <dataSource driver="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:${solr.install.dir}/example/example-DIH/hsqldb/ex" user="sa" />
+    <document>
+        <entity name="item" query="select * from item"
+                deltaQuery="select id from item where last_modified > '${dataimporter.last_index_time}'">
+            <field column="NAME" name="name" />
 
+            <entity name="feature"  
+                    query="select DESCRIPTION from FEATURE where ITEM_ID='${item.ID}'"
+                    deltaQuery="select ITEM_ID from FEATURE where last_modified > '${dataimporter.last_index_time}'"
+                    parentDeltaQuery="select ID from item where ID=${feature.ITEM_ID}">
+                <field name="features" column="DESCRIPTION" />
+            </entity>
+            
+            <entity name="item_category"
+                    query="select CATEGORY_ID from item_category where ITEM_ID='${item.ID}'"
+                    deltaQuery="select ITEM_ID, CATEGORY_ID from item_category where last_modified > '${dataimporter.last_index_time}'"
+                    parentDeltaQuery="select ID from item where ID=${item_category.ITEM_ID}">
+                <entity name="category"
+                        query="select DESCRIPTION from category where ID = '${item_category.CATEGORY_ID}'"
+                        deltaQuery="select ID from category where last_modified > '${dataimporter.last_index_time}'"
+                        parentDeltaQuery="select ITEM_ID, CATEGORY_ID from item_category where CATEGORY_ID=${category.ID}">
+                    <field column="DESCRIPTION" name="cat" />
+                </entity>
+            </entity>
+        </entity>
+    </document>
+</dataConfig>  -->
 
 <dataConfig>
     <dataSource type = "JdbcDataSource" driver="org.mariadb.jdbc.Driver" url="jdbc:mariadb://localhost:3306/school_api?user=root"/>
     <document>
-        <entity name="fliplearn_doubts_response" query="SELECT Image_Id as id, SUBSTRING(Mathpix_API_Response, 10, INSTR(Mathpix_API_Response,&quot;,\&quot;latex_confidence_rate\&quot;:&quot;)-10) as Mathpix_API_Latex,Mathpix_API_Response,Vision_API_Response from fliplearn_doubts_response where fliplearn_doubts_response.Image_Id = fliplearn_doubts_response.Image_Id;"
+        <entity name="fliplearn_doubts_response" query="SELECT Image_Id as id, REGEXP_SUBSTR(Mathpix_API_Response, &apos;&quot;latex&quot;:&quot;(.*?)&quot;&apos;) as Mathpix_API_Latex,Mathpix_API_Response,Vision_API_Response from fliplearn_doubts_response"
                 
-                deltaImportQuery= "SELECT Image_Id as id, SUBSTRING(Mathpix_API_Response, 10, INSTR(Mathpix_API_Response, &quot;,\&quot;latex_confidence_rate\&quot;:&quot;)-10) as Mathpix_API_Latex, Mathpix_API_Response, Vision_API_Response from fliplearn_doubts_response where fliplearn_doubts_response.Image_Id = fliplearn_doubts_response.Image_Id AND Image_Id = '${dataimporter.delta.id}'"
+
+
+
+
+
+
+                deltaImportQuery= "SELECT Image_Id as id, REGEXP_SUBSTR(Mathpix_API_Response, &apos;&quot;latex&quot;:&quot;(.*?)&quot;&apos;) as Mathpix_API_Latex,Mathpix_API_Response,Vision_API_Response from fliplearn_doubts_response where Image_Id = '${dataimporter.delta.id}'"
                 deltaQuery="select Image_Id as id from fliplearn_doubts_response where updated_at >= '${dataimporter.last_index_time}'">
             <field column="Image_Id" name="Image_Id" />
             <field column="Mathpix_API_Latex" name="Mathpix_API_Latex" />
             <field column="Vision_API_Response" name="Vision_API_Response" />
-            <!--<field column="Mathpix_API_Response" name="Mathpix_API_Response" />-->
+        
 
             
             
             
         </entity>
     </document>
-</dataConfig>    
+</dataConfig> 

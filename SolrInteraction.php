@@ -18,10 +18,10 @@ class SolrInteraction
     
         $searchString = str_replace(' ', '+',$searchString);    //In curl, space is represented by '+'
     
-        $search_url = $search_url . $searchString . $additionalParams . "&df=" . $search_field;
+        $solr_search_url = $search_url . $searchString . $additionalParams . "&df=" . $search_field;
             
-        
-        return $search_url;
+    
+        return $solr_search_url;
         
         
     }
